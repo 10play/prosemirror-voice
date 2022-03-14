@@ -1,0 +1,7 @@
+.voiceNote {
+  text-decoration: underline;
+  cursor: pointer;
+}
+.voiceNote:hover {
+  color: yellowgreen;
+}

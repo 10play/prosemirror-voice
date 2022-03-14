@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ProseMirror Voice</title>
+    <link rel="stylesheet" href="https://prosemirror.net/css/editor.css" />
+    <style>
+      article {
+        max-width: 800px;
+        margin: auto;
+      }
+      .ProseMirror {
+        padding: 3px;
+      }
+      h1,
+      summary {
+        font-family: 'Roboto', sans-serif;
+      }
+      summary {
+        cursor: pointer;
+      }
+      p {
+        display: block;
+        text-align: justify;
+        overflow-wrap: break-word;
+        font-size: 17px;
+        line-height: 1.8;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        color: #4d4d4d;
+        font-family: 'Roboto', sans-serif;
+        font-weight: 300;
+      }
+      pre {
+        width: 100%;
+      }
+      pre > code {
+        display: block;
+      }
+      code {
+        color: rgb(232, 62, 140);
+        border-radius: 2px;
+        padding: 2px;
+        margin: 0 1px;
+        border: 1px solid rgba(192, 192, 192, 0.5);
+      }
+      a {
+        text-decoration: none;
+      }
+      img {
+        margin-right: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <article>
+      <h1>prosemirror-voice</h1>
+      <a
+        href="https://www.npmjs.com/package/nock-puppeteer"
+        title="prosemirror-voice on npm"
+      >
+        <img src="https://img.shields.io/npm/v/nock-puppeteer.svg" />
+      </a>
+      <a
+        href="https://www.npmjs.com/package/nock-puppeteer/blob/main/LICENSE"
+        title="MIT License"
+      >
+        <img src="https://img.shields.io/badge/license-MIT-blue.svg" />
+      </a>
+      <!--<a href="https://www.npmjs.com/package/nock-puppeteer" title="CI">
+        <img src="https://www.npmjs.com/package/nock-puppeteer/workflows/CI/badge.svg" />
+      </a>-->
+      <p>
+        Details about prosemirror-voice TBD.
+      </p>
+      <div id="editor"></div>
+      <p>
+        Source code and documentation are
+        <a href="https://github.com/10play/prosemirror-voice">on GitHub</a>.
+      </p>
+      <p style="clear: both; text-align: center; color: #aaa; padding-top: 50px">
+        Made with love by
+        <a href="https://10play.dev" target="_blank" style="color: #aaa">
+          10play
+        </a>
+        <br />
+      </p>
+    </article>
+    <div style="display: none" id="content">
+      <strong>You can type in here!</strong>
+      <p>Try press `p` for start recording</p>
+    </div>
+  </body>
+</html>
