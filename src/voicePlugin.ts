@@ -11,8 +11,8 @@ type VoiceState = {
 } | null;
 
 let mediaRecorder: any;
-const ptt = (recognition: any, view: EditorView) => {
-  view.dispatch(view.state.tr.insert(view.state.selection.from + 1, view.state.schema.nodes.voiceNote.createAndFill({}, view.state.schema.text('start talking...'))))
+const ptt = (recognition: any, view: EditorView, voiceId: number) => {
+  view.dispatch(view.state.tr.insert(view.state.selection.from + 1, view.state.schema.nodes.voiceNote.createAndFill({ voiceId }, view.state.schema.text('start talking...'))))
   var final_transcript = '';
   recognition.onstart = function() {
     console.log('start')
@@ -65,9 +65,18 @@ export function getVoicePlugin(opts?: Options) {
     key: pluginKey,
     view() {
       return {
-        update: (view) => {
-          const { interimTranscript } = plugin.getState(view.state);
-          console.log('update on view?', interimTranscript)
+        update: (view, prevState) => {
+          const { interimTranscript, active } = plugin.getState(view.state);
+          const { interimTranscript: oldInterimTranscript } = plugin.getState(prevState);
+          if (oldInterimTranscript !== interimTranscript) {
+            const voiceId = active;
+            // @todo : find a better way to detect the node
+            view.state.doc.descendants((node, pos) => {
+              if(node.attrs.voiceId === voiceId) {
+                view.dispatch(view.state.tr.replaceRangeWith(pos, pos + node.nodeSize, view.state.schema.nodes.voiceNote.createAndFill({ voiceId }, view.state.schema.text(interimTranscript))))
+              }
+            })
+          }
         },
       };
     },
@@ -93,12 +102,10 @@ export function getVoicePlugin(opts?: Options) {
       },
       apply(tr, value, oldState, state): any {
         const pluginMessage = tr.getMeta(plugin);
-        console.log('valval', pluginMessage, pluginMessage === 'pttOn')
         if (!pluginMessage || !pluginMessage.type) {
           return value;
         }
         if (pluginMessage.type === 'interimTranscript') {
-          console.log('insert text?', pluginMessage.message, 0, 1)
           return {
             ...value,
             interimTranscript: pluginMessage.message,
@@ -145,12 +152,17 @@ export function getVoicePlugin(opts?: Options) {
             let audioSrc = window.URL
               .createObjectURL(audioData);
 
-            console.log('this is the file created:', audioSrc)
+            // @todo : find a better way to detect the node
+            view.state.doc.descendants((node, pos) => {
+              if(node.attrs.voiceId === voiceId) {
+                view.dispatch(view.state.tr.setNodeMarkup(pos, view.state.schema.voiceNote, { audioSrc }))
+              }
+            })
           }
           mediaRecorder.start();
           recognition.start();
 
-          ptt(recognition, view);
+          ptt(recognition, view, voiceId);
         })
       },
     },
